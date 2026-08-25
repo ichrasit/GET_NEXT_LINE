@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: muhaoz <muhaoz@student.42kocaeli.com.tr    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/25 06:46:59 by muhaoz            #+#    #+#             */
+/*   Updated: 2026/08/25 06:51:47 by muhaoz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 static int	flush_chunk(char **stash, char *buf, int *t, int b_size)
@@ -50,7 +62,9 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	b_size = BUFFER_SIZE > 4096 ? BUFFER_SIZE : 4096;
+	b_size = 4096;
+	if (BUFFER_SIZE > 4096)
+		b_size = BUFFER_SIZE;
 	buf = malloc(sizeof(char) * (b_size + 1));
 	if (!buf)
 		return (NULL);
