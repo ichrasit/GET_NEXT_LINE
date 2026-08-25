@@ -2,37 +2,30 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-
-void    test_et(char *dosya_adi, int fd_override)
+int main()
 {
     int fd;
     char    *line;
+
     int i;
-    if(fd_override != 0)
-        fd = fd_override;
-    else
-        fd = open(dosya_adi, O_RDONLY);
-    printf("\n ------ TEST %s ----------\n", dosya_adi);
-    if(fd == -1)
-        printf("Uyari: FD gecersiz veya dosya yok");
-    i = 1;
-    while((line = get_next_line(fd)) != NULL)
+
+    fd = open("big_line.txt", O_CREAT | O_WRONLY | O_TRUNC, 0777);
+    i = 0;
+    while(i < 20000)
     {
-        printf("satir %d : %s", i, line);
-        free(line);
+        write(fd, "A", 1);
         i++;
     }
-    printf("\n--> OKUMA BİTTİ VEYA NULL DONDU\n");
-    if(fd != -1)
-        close(fd);
+    write(fd, "\n", 1);
+    close(fd);
 
-}
-int main()
-{
-    test_et("Gecersiz fd testi", -1);
-    test_et("Sacma fd testi", 42);
-    test_et("bos_dosya.txt", 0);
-    test_et("tek_enter.txt", 0);
-    test_et("enter_yok.txt", 0);
-    test_et("test.txt", 0);
+    printf("Devasa satır okunuyor....");
+    fd = open("big_line.txt", O_RDONLY);
+    line = get_next_line(fd);
+    if(line)
+    {
+        printf("Okundu! satirin basarili okunan uzunluğu: %d\n", line_len(line));
+        free(line);
+    }
+    close(fd);
 }
