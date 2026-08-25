@@ -1,12 +1,5 @@
 #include "get_next_line.h"
 
-// fonksiyonlar headerdan önce test implement
-
-int		line_len(char *str);
-char	*extract_line(char *stash);
-char	*clean_stash(char *stash);
-char	*join_stash(char *stash, char *buf);
-
 static char *read_file(int fd, char *stash)
 {
     char    *buf;
