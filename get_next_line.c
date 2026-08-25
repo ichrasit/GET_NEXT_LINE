@@ -1,0 +1,54 @@
+#include "get_next_line.h"
+
+// fonksiyonlar headerdan önce test implement
+
+int		line_len(char *str);
+char	*extract_line(char *stash);
+char	*clean_stash(char *stash);
+char	*join_stash(char *stash, char *buf);
+
+static char *read_file(int fd, char *stash)
+{
+    char    *buf;
+    int bytes;
+    int len;
+
+    buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+    if(!buf)
+        return NULL;
+    bytes = 1;
+    while(bytes > 0)
+    {
+        bytes = read(fd, buf, BUFFER_SIZE);
+        if(bytes == -1)
+        {
+            free(buf);
+            free(stash);
+            return NULL;
+        }
+        buf[bytes] = '\0';
+        stash = join_stash(stash, buf);
+        len = line_len(stash);
+        len = line_len(stash);
+
+        if(stash && len > 0 && stash[len - 1] == '\n')
+            break;
+    }
+    free(buf);
+    return stash;
+}
+
+char    *get_next_line(int fd)
+{
+    static char *stash;
+    char *line;
+
+    if(fd < 0 || BUFFER_SIZE <= 0)
+        return NULL;
+    stash = read_file(fd, stash);
+    if(!stash)
+        return NULL;
+    line = extract_line(stash);
+    stash = clean_stash(stash);
+    return line;
+}
