@@ -2,15 +2,19 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-int main()
+
+void    test_et(char *dosya_adi, int fd_override)
 {
     int fd;
     char    *line;
     int i;
-
-    fd = open("test.txt", O_RDONLY);
+    if(fd_override != 0)
+        fd = fd_override;
+    else
+        fd = open(dosya_adi, O_RDONLY);
+    printf("\n ------ TEST %s ----------\n", dosya_adi);
     if(fd == -1)
-        return(printf("dosya acilmadi"), 1);
+        printf("Uyari: FD gecersiz veya dosya yok");
     i = 1;
     while((line = get_next_line(fd)) != NULL)
     {
@@ -18,6 +22,17 @@ int main()
         free(line);
         i++;
     }
-    close(fd);
-    return 0;
+    printf("\n--> OKUMA BİTTİ VEYA NULL DONDU\n");
+    if(fd != -1)
+        close(fd);
+
+}
+int main()
+{
+    test_et("Gecersiz fd testi", -1);
+    test_et("Sacma fd testi", 42);
+    test_et("bos_dosya.txt", 0);
+    test_et("tek_enter.txt", 0);
+    test_et("enter_yok.txt", 0);
+    test_et("test.txt", 0);
 }
