@@ -41,3 +41,33 @@ char    *extract_line(char *stash)
     line[i] = '\0';
     return line;
 }
+
+char    *clean_stash(char *stash)
+{
+    int i;
+    int j;
+    char    *new_stash;
+
+    // branchless fonksiyonumuzla satırın nerede bittiğini bulucam burda
+    i = line_len(stash);
+    // eğer satır bittikten sonra okunacak bir şey kalmamışsa stash temizle null don
+
+    if(!stash[i])
+    {
+        free(stash);
+        return NULL;
+    }
+
+    j = i;
+    while(stash[j])
+        j++;
+    new_stash = (char *)malloc(sizeof(char) * (j - i + 1));
+    if(!new_stash)
+        return NULL;
+    j = 0;
+    while(stash[i])
+        new_stash[j++] = stash[i++];
+    new_stash[j] = '\0';
+    free(stash);
+    return new_stash;
+}
