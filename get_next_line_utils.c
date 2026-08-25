@@ -17,3 +17,27 @@ int line_len(char *str)
     }
     return i;
 }
+
+char    *extract_line(char *stash)
+{
+    char *line;
+    int len;
+    int i;
+
+    if(!stash || !stash[0])
+        return NULL;
+    len = line_len(stash);
+    line = (char *)malloc(sizeof(char) * (len + 1));
+    if(!line)
+        return NULL;
+    i = 0;
+    // sadece daha önce bulunan uzunluk kadar kopyalıcam
+    // içeride newlline gördün mü dur gibi hiçbir if konstorlü olmayaca
+    while(i < len)
+    {
+        line[i] = stash[i];
+        i++;
+    }
+    line[i] = '\0';
+    return line;
+}
