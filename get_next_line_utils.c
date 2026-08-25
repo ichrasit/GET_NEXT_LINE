@@ -104,7 +104,7 @@ char    *join_stash(char *stash, char *buf)
     j = 0;
     while(buf[j])
         new_stash[i++] = buf[j++];
-    new_stash = '\0';
+    new_stash[i] = '\0';
     free(stash);
     return new_stash;
 
