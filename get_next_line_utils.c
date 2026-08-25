@@ -71,3 +71,41 @@ char    *clean_stash(char *stash)
     free(stash);
     return new_stash;
 }
+
+char    *join_stash(char *stash, char *buf)
+{
+    char    *new_stash;
+    int i;
+    int j;
+
+    // eğer stash oluşmadıysa ilk defa oku birleştirmek için null bellek aç
+
+    if(!stash)
+    {
+        stash = (char *)malloc(1 * sizeof(char));
+        stash[0] = '\0';
+    } 
+    if(!stash || !buf)
+    {
+        return NULL;
+    }
+    i = 0;
+    while(stash[i])
+        i++;
+    j = 0;
+    while(buf[j])
+        j++;
+    new_stash = (char *)malloc(sizeof(char) * (i + j + 1));
+    if(!new_stash)
+        return NULL;
+    i = -1;
+    while(stash[++i])
+        new_stash[i] = stash[i];
+    j = 0;
+    while(buf[j])
+        new_stash[i++] = buf[j++];
+    new_stash = '\0';
+    free(stash);
+    return new_stash;
+
+}
